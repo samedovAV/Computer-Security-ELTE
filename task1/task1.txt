@@ -1,0 +1,19 @@
+Create a function named "test_function" that do the following things after each other:
+
+Inputs a 20 length list of integers
+Convert these numbers to characters with the chr function (https://docs.python.org/3/library/functions.html#chr)
+Join this list of characters to a string (https://www.w3schools.com/python/ref_string_join.asp)
+Make the string lower case
+Create a string that contains the letters of the string from 2 to 10th character and put it twice after each other.
+For input: [88, 85, 84, 71, 66, 72, 65, 82, 74, 70, 87, 70, 85, 68, 74, 84, 81, 87, 79, 82]
+
+The betweek step values: ['X', 'U', 'T', 'G', 'B', 'H', 'A', 'R', 'J', 'F', 'W', 'F', 'U', 'D', 'J', 'T', 'Q', 'W', 'O', 'R'] XUTGBHARJFWFUDJTQWOR xutgbharjfwfudjtqwor
+
+So the results returned by the function is: tgbharjftgbharjf
+
+https://tms.inf.elte.hu/ You have to compress a main.py file into a zip file and send submit that file (the name of the zip file does not matter). You can add more files into the zip and import from the main.py, but the main.py is the file that will be imported.
+
+In the file put only the asked function and do not add extra prints in the functions, just return the desired output, like:
+
+def test_function(L):
+    return 'something'
