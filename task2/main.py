@@ -81,7 +81,11 @@ def int2base64(value):
     for i in parts:
         res += base64_dict.get(i)
 
-    res += '=='
+    if len(res) % 4 != 0:
+        pads_needed = (int(len(res) / 4) + 1) * 4 - len(res)
+        for i in range(pads_needed):
+            res = res + '='
+
     return res
 
 
@@ -91,5 +95,7 @@ def hex2base64(value):
     'YQ=='
     >>> hex2base64('123456789abcde')
     'EjRWeJq83g=='
+    >>> hex2base64('7368726f6f6d')
+    'c2hyb29t'
     """
     return int2base64(int(value, 16))
