@@ -1,4 +1,19 @@
-import base64
+base64_dict = {"000000": "A", "010000": "Q", "100000": "g", "110000": "w",
+               "000001": "B", "010001": "R", "100001": "h", "110001": "x",
+               "000010": "C", "010010": "S", "100010": "i", "110010": "y",
+               "000011": "D", "010011": "T", "100011": "j", "110011": "z",
+               "000100": "E", "010100": "U", "100100": "k", "110100": "0",
+               "000101": "F", "010101": "V", "100101": "l", "110101": "1",
+               "000110": "G", "010110": "W", "100110": "m", "110110": "2",
+               "000111": "H", "010111": "X", "100111": "n", "110111": "3",
+               "001000": "I", "011000": "Y", "101000": "o", "111000": "4",
+               "001001": "J", "011001": "Z", "101001": "p", "111001": "5",
+               "001010": "K", "011010": "a", "101010": "q", "111010": "6",
+               "001011": "L", "011011": "b", "101011": "r", "111011": "7",
+               "001100": "M", "011100": "c", "101100": "s", "111100": "8",
+               "001101": "N", "011101": "d", "101101": "t", "111101": "9",
+               "001110": "O", "011110": "e", "101110": "u", "111110": "+",
+               "001111": "P", "011111": "f", "101111": "v", "111111": "/"}
 
 
 def hex2bin(value):
@@ -53,7 +68,21 @@ def int2base64(value):
     >>> int2base64(0x78)
     'eA=='
     """
-    return base64.b64encode(bytes([int(value)])).decode("utf-8")
+    to_bin = hex2bin(str(hex(value)[2:]))
+    to_bin = fillupbyte(to_bin)
+    if len(to_bin) % 6 != 0:
+        sextets_count = int(len(to_bin) / 6) + 1
+        zeros_needed = sextets_count * 6 - len(to_bin)
+        for i in range(zeros_needed):
+            to_bin = to_bin + '0'
+
+    parts = [to_bin[i:i+6] for i in range(0, len(to_bin), 6)]
+    res = ""
+    for i in parts:
+        res += base64_dict.get(i)
+
+    res += '=='
+    return res
 
 
 def hex2base64(value):
@@ -63,4 +92,4 @@ def hex2base64(value):
     >>> hex2base64('123456789abcde')
     'EjRWeJq83g=='
     """
-    return base64.b64encode(bytes.fromhex(value)).decode()
+    return int2base64(int(value, 16))
