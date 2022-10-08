@@ -109,6 +109,14 @@ def encrypt_xor_with_changing_key_by_prev_cipher(value, key, operation):
 def encrypt_xor_with_changing_key_by_prev_cipher_longer_key(value, key_list, operation):
     """
     >>> key_list = [0x20, 0x44, 0x54,0x20]
+    >>> encrypt_xor_with_changing_key_by_prev_cipher_longer_key('abcdefg', key_list, 'encrypt')
+    'A&7D$@P'
+    >>> encrypt_xor_with_changing_key_by_prev_cipher_longer_key('aaabbbb', key_list, 'encrypt')
+    'A%5B#GW'
+    >>> encrypt_xor_with_changing_key_by_prev_cipher_longer_key(
+    ...    encrypt_xor_with_changing_key_by_prev_cipher_longer_key('abcdefg',key_list,'encrypt'),
+    ...        key_list,'decrypt')
+    'abcdefg'
     >>> encrypt_xor_with_changing_key_by_prev_cipher_longer_key(
     ...    encrypt_xor_with_changing_key_by_prev_cipher_longer_key('Hellobello, it will work for a long message as well',key_list,'encrypt'),
     ...        key_list,'decrypt')
@@ -135,15 +143,22 @@ def encrypt_xor_with_changing_key_by_prev_cipher_longer_key(value, key_list, ope
             encrypted_chunks.append(encrypt_xor_with_changing_key_by_prev_cipher(chunks[i], key_list[i], operation))
 
         # from encrypted chunks to res
-        for i in range(len(encrypted_chunks)):
-            if i >= len(encrypted_chunks[i]):
-                break
-            else:
+        if len(encrypted_chunks[0]) > len(encrypted_chunks):
+            for i in range(len(encrypted_chunks[0])):
                 if len(encrypted_chunks[-1]) < i + 1:
-                    res = [x[i] for x in encrypted_chunks[0:-1]]
+                    encrypted += ''.join([x[i] for x in encrypted_chunks[0:-1]])
                 else:
-                    res = [x[i] for x in encrypted_chunks]
-            encrypted += ''.join(res)
+                    encrypted += ''.join([x[i] for x in encrypted_chunks])
+        else:
+            for i in range(len(encrypted_chunks)):
+                if i >= len(encrypted_chunks[i]):
+                    break
+                else:
+                    if len(encrypted_chunks[-1]) < i + 1:
+                        res = [x[i] for x in encrypted_chunks[0:-1]]
+                    else:
+                        res = [x[i] for x in encrypted_chunks]
+                encrypted += ''.join(res)
         return encrypted
 
     elif operation == 'decrypt':
@@ -163,13 +178,20 @@ def encrypt_xor_with_changing_key_by_prev_cipher_longer_key(value, key_list, ope
             decrypted_chunks.append(encrypt_xor_with_changing_key_by_prev_cipher(chunks[i], key_list[i], operation))
 
         # from encrypted chunks to res
-        for i in range(len(decrypted_chunks)):
-            if i >= len(decrypted_chunks[i]):
-                break
-            else:
+        if len(decrypted_chunks[0]) > len(decrypted_chunks):
+            for i in range(len(decrypted_chunks[0])):
                 if len(decrypted_chunks[-1]) < i + 1:
-                    res = [x[i] for x in decrypted_chunks[0:-1]]
+                    decrypted += ''.join([x[i] for x in decrypted_chunks[0:-1]])
                 else:
-                    res = [x[i] for x in decrypted_chunks]
-            decrypted += ''.join(res)
+                    decrypted += ''.join([x[i] for x in decrypted_chunks])
+        else:
+            for i in range(len(decrypted_chunks)):
+                if i >= len(decrypted_chunks[i]):
+                    break
+                else:
+                    if len(decrypted_chunks[-1]) < i + 1:
+                        res = [x[i] for x in decrypted_chunks[0:-1]]
+                    else:
+                        res = [x[i] for x in decrypted_chunks]
+                decrypted += ''.join(res)
         return decrypted
