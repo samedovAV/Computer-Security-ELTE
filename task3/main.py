@@ -85,17 +85,26 @@ def decrypt_single_byte_xor(value):
 
     true_results = []
     hex_results_list = {}
+    decoded_list = []
     for key in keys_list:
 
         raw_decrypted_hex = encrypt_single_byte_xor(value, key)
         hex_results_list.update({raw_decrypted_hex: key})
 
-        try:
+        res_f = bytes.fromhex(raw_decrypted_hex)
+        decoded = ''.join(chr(b ^ int(key, 16)) for b in res_f)
+        decoded_list.append(decoded)
+
+        if is_valid(decoded):
+            tmp_text = hex2string(raw_decrypted_hex)
+            true_results.append(tmp_text)
+
+        '''try:
             tmp_text = hex2string(raw_decrypted_hex)
             if is_valid(tmp_text):
                 true_results.append(tmp_text)
         except:
-            continue
+            continue'''
 
     print(len(hex_results_list))
     # with open("hex_results_list.json", "w") as f:
