@@ -105,3 +105,100 @@ def encrypt_with_power_and_swap(message, key, mode):
         res += chr(new_byte_value)
 
     return res
+
+
+# Task 1 (B)
+def encrypt_with_mul(message, key):
+    """
+    >>> encrypt_with_mul('Hello',227)
+    '«£àt_'
+    >>> encrypt_with_mul(encrypt_with_mul('Hello',123),123)
+    'Hello'
+    >>> encrypt_with_mul(encrypt_with_mul('Cryptography',10),10)
+    'Cryptography'
+    """
+
+    res = ""
+
+    actual_key = key
+    for m in message:
+        new_byte_value = (ord(m) ^ actual_key) % 256
+        actual_key = actual_key * 2
+        res += chr(new_byte_value)
+
+    return res
+
+
+# Task 2 (B)
+def encrypt_with_mul2(message, key, mode):
+    """
+    >>> encrypt_with_mul2('Hello',34,'encrypt')
+    'j!ä|O'
+    >>> encrypt_with_mul2('Hello2',131,'encrypt')
+    'Ëc`t_R'
+    >>> encrypt_with_mul2(encrypt_with_mul2('Hello',123,'encrypt'),123,'decrypt')
+    'Hello'
+    >>> encrypt_with_mul2(encrypt_with_mul2('Cryptography',10,'encrypt'),10,'decrypt')
+    'Cryptography'
+    """
+    res = ""
+
+    actual_key = key
+    for m in message:
+        new_byte_value = (ord(m) ^ actual_key) % 256
+        actual_key = actual_key * 2
+        if mode == 'encrypt':
+            if actual_key == 0 or actual_key == 1:
+                actual_key = ord(m)
+        elif mode == 'decrypt':
+            if actual_key == 0 or actual_key == 1:
+                actual_key = new_byte_value
+        else:
+            raise Exception(f'Unknown mode {mode}')
+        res += chr(new_byte_value)
+
+    return res
+
+
+# Task 3 (B)
+def swap_every_second_bit(value):
+    """
+    >>> swap_every_second_bit(1)
+    2
+    >>> swap_every_second_bit(2)
+    1
+    >>> swap_every_second_bit(4)
+    8
+    >>> swap_every_second_bit(16)
+    32
+    >>> bin(swap_every_second_bit(0b1010))
+    '0b101'
+    >>> bin(swap_every_second_bit(0b01010110))
+    '0b10101001'
+    """
+    res = ""
+    bin_value = bin(value)
+    target_length = len(bin_value[2::]) + (8 - len(bin_value[2::]) % 8) % 8
+    bin_value = bin_value[2:].zfill(target_length)
+    for i in range(0, len(bin_value) - 1, 2):
+        res += bin_value[i+1]
+        res += bin_value[i]
+    return int(res, 2)
+
+
+# Task 4 (B)
+def break_scheme2(message):
+    """
+    >>> break_scheme2("ôR!ú{E")
+    'eperke'
+    >>> break_scheme2('gamuE')
+    'eeeee'
+    >>> break_scheme2("bgbzu")
+    'cefre'
+    """
+    test_key = ord('e')
+
+    for key in range(256):
+
+
+    return encrypt_with_mul2(message, test_key, 'decrypt')
