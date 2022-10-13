@@ -1,6 +1,3 @@
-from operator import itemgetter
-
-
 def hex2bin(hex_value):
     '''
     >>> hex2bin('f')
