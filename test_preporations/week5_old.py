@@ -181,7 +181,7 @@ def swap_every_second_bit(value):
     target_length = len(bin_value[2::]) + (8 - len(bin_value[2::]) % 8) % 8
     bin_value = bin_value[2:].zfill(target_length)
     for i in range(0, len(bin_value) - 1, 2):
-        res += bin_value[i+1]
+        res += bin_value[i + 1]
         res += bin_value[i]
     return int(res, 2)
 
@@ -197,8 +197,4 @@ def break_scheme2(message):
     'cefre'
     """
     test_key = ord('e')
-
-    for key in range(256):
-
-
-    return encrypt_with_mul2(message, test_key, 'decrypt')
+    # return encrypt_with_mul2(message, test_key, 'decrypt')
