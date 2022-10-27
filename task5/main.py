@@ -10,8 +10,11 @@ def decrypt_aes(cipher_text, key, iv):
     >>> decrypt_aes(bytes([171, 218, 160, 96, 193, 134, 73, 81, 221, 149, 19, 180, 31, 247, 106, 64]),key,iv)
     b'lovecryptography'
     """
+    # iv - initialization vector
+    # iv has the same size as the block that is encrypted
     cipher = AES.new(key, AES.MODE_CBC, iv)
-
+    plaintext = cipher.decrypt(cipher_text)
+    return plaintext
 
 
 def bit_permutation(message, order_arr):
@@ -55,8 +58,7 @@ def left_shift_rot(value, step=1):
     >>> left_shift_rot('0001',3)
     '1000'
     """
-    res = int(value, 2) << step
-    return "{0:b}".format(res)
+    return value[step:] + value[:step]
 
 
 def PKCS7_pad(message, res_len):
