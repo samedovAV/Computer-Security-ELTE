@@ -76,7 +76,19 @@ def encrypt_aes_cbc_with_ecb(plaintext, key, iv):
     b'\\xab\\xda\\xa0`\\xc1\\x86IQ\\xdd\\x95\\x13\\xb4\\x1f\\xf7j@\\xd7\\xf2\\xd1T\\xfe[\\xd1\\xb4d5\\x90\\xdc\\x1fj?\\x12\\xfd\\x15\\xcb\\x8b\\xa3\\x1c*\\xd4B\\x8fJs\\x03\\xf9\\x7f3'
     """
     cipher = AES.new(key, AES.MODE_ECB)
-    cipher_
+    if len(plaintext) / len(key) != 1:
+        res = bytes()
+        parts = [plaintext[i:i + len(key)] for i in range(0, len(plaintext), len(key))]
+        cipher_text_first = cipher.encrypt(xor_byte_arrays(parts[0], iv))
+        res = res + cipher_text_first
+        actual_cipher_text = cipher_text_first
+        for i in range(1, len(parts)):
+            cipher_text_i = cipher.encrypt(bytearray(xor_byte_arrays(parts[i], actual_cipher_text)))
+            res = res + cipher_text_i
+            actual_cipher_text = cipher_text_i
+    else:
+        res = cipher.encrypt(xor_byte_arrays(plaintext, iv))
+    return res
 
 
 
