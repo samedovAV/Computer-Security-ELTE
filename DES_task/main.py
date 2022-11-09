@@ -1,4 +1,4 @@
-from random import randbytes
+import os
 
 from Crypto.Cipher import DES
 
@@ -247,8 +247,8 @@ def are_random_tests_all_passes(number_of_tests):
     """
     success_tests = 0
     for i in range(number_of_tests):
-        random_key = randbytes(8)
-        random_message = randbytes(8)
+        random_key = os.urandom(8)
+        random_message = os.urandom(8)
         cipher = DES.new(random_key, DES.MODE_ECB)
         cipher_message = cipher.encrypt(random_message)
 
