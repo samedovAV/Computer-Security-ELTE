@@ -1,6 +1,7 @@
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 import base64
+from hashlib import sha512
 
 
 p = 11003378959096834724676546774061387323366640315376248759704778733861819318638880334019013198255253637201505215283454116581559061011493945035043282347726567
@@ -103,9 +104,13 @@ messages = [
 
 def find_the_real_code():
     # open key file
-    f = open('my_friend_key.pub.pem', 'r')
+    f = open('my_friend_key.pub', 'r')
     key = RSA.importKey(f.read())
     # verify signature
     for i in messages:
-        hashed = SHA
-    return ""
+        hashed = int.from_bytes(sha512(i['text']).digest(), byteorder='big')
+        signature = base64.b64decode(i['signature'])
+        hash_from_signature = pow(int.from_bytes(signature, byteorder='big'), key.e, key.n)
+        if hashed == hash_from_signature:
+            return i['text']
+
